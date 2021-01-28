@@ -108,15 +108,29 @@ struct CarWash
     You'll need to insert the Person struct from the video in the space below.
  */
 
-struct Limb
+struct Foot
 {
     void stepForward();
-    int stepSize();
+    int stepSize(int speed);
 };
 
-int stepSize(std::string direction)
+int stepSize(int speed)
 {
-    return 1;
+    //float maxStep = 1.5f;
+    //float minStep = 0.3f;
+    
+    if (speed <=3)
+    {
+         return 3;
+     }
+     else if (speed >= 15)
+     {
+         return 15;
+     }
+     else
+     {
+         return speed;
+     }
 }
     
 struct Person
@@ -127,8 +141,8 @@ struct Person
     float GPA;
     unsigned int SATScore = 0;
     int distanceTraveled = 0;   
-    Limb leftFoot;
-    Limb rightFoot;
+    Foot leftFoot;
+    Foot rightFoot;
     
     void run(int howFast, bool startWithLeftFoot)
     {
@@ -143,7 +157,7 @@ struct Person
             leftFoot.stepForward();
         }
         
-        distanceTraveled += leftFoot.stepSize() + rightFoot.stepSize();
+        distanceTraveled += leftFoot.stepSize(howFast) + rightFoot.stepSize(howFast);
     }
 };
 
@@ -179,7 +193,7 @@ struct CanPlant
         int reserveGood(int customerId, int amount = 0);
     };
     
-    int produceCans(double slicedFish, int tinAmount);
+    int produceCans(double slicedFish, int tinAmount = 1000);
     void loadBoxes(int boxes, int wareHouseNumber);
     double reportScrapOut(double rawFish, float workHours);
 };
@@ -319,24 +333,26 @@ struct MonitorController
 void CanPlant::OfficeWorker::makeCall(int customerId, float time)
 {
     SipProvider sipnet;
-    bool hookup = true;
-    bool dialed = sipnet.makeCall(intNumber, customerId);
+    sipnet.makeCall(intNumber, customerId);
+    time++;
 }
 
 void CanPlant::OfficeWorker::pickCall(int number, float time)
 {
-    bool hookup = true;
+    //int recordedNumber = number;
+    number = 0;
     time++;
 }
 
 int CanPlant::OfficeWorker::reserveGood(int customerId, int amount)
 {
+    customerId++;
     return amount++;
 }
 
-int CanPlant::produceCans(double slicedFish, int tinAmount)
+int CanPlant::produceCans(double fish, int tin)
 {
-    int amount = slicedFish / tinAmount;
+    int amount = fish / tin;
     return amount;
 }
 
@@ -346,9 +362,9 @@ void CanPlant::loadBoxes(int boxes, int wareHouseNumber)
     wareHouseNumber++;
 }
 
-double CanPlant::reportScrapOut(double rawFish, float workHours)
+double CanPlant::reportScrapOut(double raw, float work)
 {
-    return rawFish * workHours *.01;
+    return raw * work *.01;
 }
 
 bool SipProvider::makeCall(int src, int dst)
@@ -361,7 +377,7 @@ bool SipProvider::makeCall(int src, int dst)
     {
         return true;
     }
-};
+}
 
 float SipProvider::chargeCustomer(double time, int customerId)
 {
@@ -390,7 +406,7 @@ void Cat::eat(char foodType)
 
 void Cat::sleep (float time)
 {
-    //zzzzz
+    time--;
 }
 
 void Cat::mew (int count)
@@ -405,10 +421,16 @@ void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
     {
     recordTest(date, time, testNum++);
     }
+    
+    date++;
+    time++;
 }
 
 bool SpaceShip::CrewMember::recordTest(int date, float time, int testNum)
 {
+    date++;
+    time++;
+    
     if (testNum !=0)
     {
     return true;
@@ -419,10 +441,15 @@ bool SpaceShip::CrewMember::recordTest(int date, float time, int testNum)
     }
 }
 
-void SpaceShip::CrewMember::examineCrew (int date, float time, CrewMember memberId)
+void SpaceShip::CrewMember::examineCrew (int date, float time, CrewMember id)
 {
     int testNum = 0;
-    recordTest(date, time, testNum++);
+    if (id.weight >= 70.0f)
+    {
+        recordTest(date, time, testNum++);
+        date++;
+        time++;
+    }
 }
 
 bool SpaceShip::dock()
@@ -460,7 +487,7 @@ void DAC::readInput(int channelNum)
 {
     for (int i=0;i++;i<channelNum)
     {
-    double a=33/i;
+    checkError(i);
     }
 }
 
@@ -479,22 +506,27 @@ bool DAC::checkError(double sampleNum)
 
 void DAC::audioOut(int channelNum)
 {
-    int bitDepth = 24;
+    HeadphoneAmp ampLeft, ampRight;
+    
+    //int bits = 24;
     
     for (int i=0;i++;i<channelNum)
     {
-    double a = i / bitDepth;
+        ampLeft.doAmp(i);
+        ampRight.doAmp(i);
+    
     }
 }
 
 bool PowerUnit::getElectricity(int outletStandart)
 {
-return true;
+    if (outletStandart<3) return true;
+    return false;
 }
 
-double PowerUnit::convertVoltage(double inVolt, double outVolt)
+double PowerUnit::convertVoltage(double in, double out)
 {
-return outVolt;
+return std::abs(in - out);
 }
 
 bool PowerUnit::status(int circuitId)
@@ -512,7 +544,7 @@ bool PowerUnit::status(int circuitId)
 void VCA::attenuate(int coefficient)
 {
     int knobValue = readKnob();
-    int outVolume = knobValue * coefficient;
+    knobValue = knobValue * coefficient;
 }
 
 void VCA::inputPower(int amountOfPower)
@@ -532,10 +564,11 @@ int VCA::readKnob (double knobAngle)
 
 void HeadphoneAmp::getInput(int channelNum)
 {
-    
+    DAC DACLeft, DACRight;
     for (int i=0;i++;i<channelNum)
     {
-    double a=44/i;
+        DACLeft.readInput(i);
+        DACRight.readInput(i);
     }
 
 }
@@ -543,7 +576,7 @@ void HeadphoneAmp::getInput(int channelNum)
 void HeadphoneAmp::doAmp(int channelNum)
 {
     VCA VCA0;
-    int output;
+    //int output;
     for (int i=0;i++;i<channelNum)
     {
     VCA0.attenuate(1);
@@ -553,19 +586,20 @@ void HeadphoneAmp::doAmp(int channelNum)
 
 bool HeadphoneAmp::noiseReduction(int filterNum)
 {
-    return true;
+    if(filterNum == 1) return true;
+    return false;
 }
 
 bool Body::checkTheBolt(int circuitId)
 {
-    bool status;
+    //bool status;
     if (circuitId == 0) return true;
     return false;
 }
 
 bool Body::checkShortCircuit(int circuitId)
 {
-    bool status;
+    //bool status;
     if (circuitId == 0) return true;
     return false;
 
@@ -573,25 +607,22 @@ bool Body::checkShortCircuit(int circuitId)
 
 void Body::alarmOverDust(float time)
 {
-    /*
-    beep-beep;
-    blink-blink;
-    */
+    time--;
 }
 
 void MonitorController::setVol(int amount)
 {
-    HeadphoneAmp AmpLeft, AmpRight;
+    HeadphoneAmp ampLeft, ampRight;
     
-    AmpLeft.doAmp(amount);
-    AmpRight.doAmp(amount);
+    ampLeft.doAmp(amount);
+    ampRight.doAmp(amount);
 }
 
 bool MonitorController::selectSource(int sourceNum, bool status)
 {
     int inputSource = 0;
     
-    if (inputSource != sourceNum)
+    if (inputSource != sourceNum || status == true)
     {
         inputSource = sourceNum;
     }
