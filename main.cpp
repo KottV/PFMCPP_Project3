@@ -193,9 +193,9 @@ struct CanPlant
         int reserveGood(int customerId, int amount = 0);
     };
     
-    int produceCans(double slicedFish, int tinAmount = 1000);
+    int produceCans(int slicedFish, int tinAmount = 1000);
     void loadBoxes(int boxes, int wareHouseNumber);
-    double reportScrapOut(double rawFish, float workHours);
+    double reportScrapOut(double rawFish, double workHours);
 };
 
 struct SipProvider
@@ -207,8 +207,8 @@ struct SipProvider
     int slaType = 1;
     
     bool makeCall(int src, int dst);
-    float chargeCustomer(double time, int customerId);
-    float traficCount(double time);
+    double chargeCustomer(double time, int customerId);
+    double traficCount(double time);
 };
 
 struct Cat
@@ -286,7 +286,7 @@ struct VCA
     
     void attenuate(int coefficient = -50);
     void inputPower(int amountOfPower = 20);
-    int readKnob (double knobAngle = 10.123);
+    int readKnob (int knobAngle = 10);
 };
 
 struct HeadphoneAmp
@@ -350,7 +350,7 @@ int CanPlant::OfficeWorker::reserveGood(int customerId, int amount)
     return amount++;
 }
 
-int CanPlant::produceCans(double fish, int tin)
+int CanPlant::produceCans(int fish, int tin)
 {
     int amount = fish / tin;
     return amount;
@@ -362,7 +362,7 @@ void CanPlant::loadBoxes(int boxes, int wareHouseNumber)
     wareHouseNumber++;
 }
 
-double CanPlant::reportScrapOut(double raw, float work)
+double CanPlant::reportScrapOut(double raw, double work)
 {
     return raw * work *.01;
 }
@@ -379,7 +379,7 @@ bool SipProvider::makeCall(int src, int dst)
     }
 }
 
-float SipProvider::chargeCustomer(double time, int customerId)
+double SipProvider::chargeCustomer(double time, int customerId)
 {
     if (customerId == 0)
     {
@@ -391,9 +391,9 @@ float SipProvider::chargeCustomer(double time, int customerId)
     }
 }
 
-float SipProvider::traficCount(double time)
+double SipProvider::traficCount(double time)
 {
-    return time * 0.1f;
+    return time * 0.1;
 }
 
 void Cat::eat(char foodType)
@@ -485,7 +485,7 @@ bool SpaceShip::takeOf(float startTime)
 
 void DAC::readInput(int channelNum)
 {
-    for (int i=0;i++;i<channelNum)
+    for (int i=0;i<channelNum;i++)
     {
     checkError(i);
     }
@@ -494,7 +494,7 @@ void DAC::readInput(int channelNum)
 bool DAC::checkError(double sampleNum)
 {
     double originalValue = 3.141592;
-    if (sampleNum == originalValue)
+    if (sampleNum > originalValue || sampleNum < originalValue)
     {
     return false;
     }
@@ -510,7 +510,7 @@ void DAC::audioOut(int channelNum)
     
     //int bits = 24;
     
-    for (int i=0;i++;i<channelNum)
+    for (int i=0;i<channelNum;i++)
     {
         ampLeft.doAmp(i);
         ampRight.doAmp(i);
@@ -556,7 +556,7 @@ void VCA::inputPower(int amountOfPower)
     }
 }
 
-int VCA::readKnob (double knobAngle)
+int VCA::readKnob (int knobAngle)
 {
     int gain = knobAngle * 1000;
     return gain;
@@ -565,7 +565,7 @@ int VCA::readKnob (double knobAngle)
 void HeadphoneAmp::getInput(int channelNum)
 {
     DAC DACLeft, DACRight;
-    for (int i=0;i++;i<channelNum)
+    for (int i=0;i<channelNum;i++)
     {
         DACLeft.readInput(i);
         DACRight.readInput(i);
@@ -577,7 +577,7 @@ void HeadphoneAmp::doAmp(int channelNum)
 {
     VCA VCA0;
     //int output;
-    for (int i=0;i++;i<channelNum)
+    for (int i=0;i<channelNum;i++)
     {
     VCA0.attenuate(1);
     }
