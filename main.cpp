@@ -127,10 +127,7 @@ int stepSize(int speed)
     {
         return 15;
     }
-    else
-    {
-        return speed;
-    }
+    return speed;
 }
     
 struct Person
@@ -334,32 +331,31 @@ void CanPlant::OfficeWorker::makeCall(int customerId, float time)
 {
     SipProvider sipnet;
     sipnet.makeCall(intNumber, customerId);
-    time++; FIXME
+    ++time;
 }
 
 void CanPlant::OfficeWorker::pickCall(int number, float time)
 {
     //int recordedNumber = number;
     number = 0;
-    time++; FIXME
+    ++time;
 }
 
 int CanPlant::OfficeWorker::reserveGood(int customerId, int amount)
 {
-    customerId++; FIXME
-    return amount++; FIXME
+    ++customerId;
+    return ++amount;
 }
 
 int CanPlant::produceCans(int fish, int tin)
 {
-    int amount = fish / tin;
-    return amount;
+    return fish / tin;
 }
 
 void CanPlant::loadBoxes(int boxes, int wareHouseNumber)
 {
-    boxes++; FIXME
-    wareHouseNumber++; FIXME
+    ++boxes;
+    ++wareHouseNumber;
 }
 
 double CanPlant::reportScrapOut(double raw, double work)
@@ -369,14 +365,7 @@ double CanPlant::reportScrapOut(double raw, double work)
 
 bool SipProvider::makeCall(int src, int dst)
 {
-    if (src == dst)
-    {
-        return false;
-    }
-    else FIXME
-    {
-        return true;
-    }
+    return (src != dst);
 }
 
 double SipProvider::chargeCustomer(double time, int customerId)
@@ -385,10 +374,7 @@ double SipProvider::chargeCustomer(double time, int customerId)
     {
         return 0;
     }
-    else FIXME
-    {
-        return time * price;
-    }
+    return time * price;
 }
 
 double SipProvider::traficCount(double time)
@@ -400,18 +386,18 @@ void Cat::eat(char foodType)
 {
     if (foodType == 'F')
     {
-        Cat::mew(3); FIXME
+        mew(3);
     }
 }
 
 void Cat::sleep (float time)
 {
-    time--; FIXME
+    ++time;
 }
 
 void Cat::mew (int count)
 { 
-    count--; FIXME
+    --count;
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
@@ -419,26 +405,19 @@ void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
     int testNum = 0;
     if (cat.liveNumber <= 9)
     {
-        recordTest(date, time, testNum++); FIXME
+        recordTest(date, time, ++testNum);
     } 
     
-    date++; FIXME
-    time++; FIXME
+    ++date;
+    ++time;
 }
 
 bool SpaceShip::CrewMember::recordTest(int date, float time, int testNum)
 {
-    date++; FIXME
-    time++; FIXME
+    ++date;
+    ++time;
     
-    if (testNum !=0)
-    {
-        return true;
-    }
-    else FIXME
-    {
-        return false;
-    }
+    return (testNum !=0);
 }
 
 void SpaceShip::CrewMember::examineCrew (int date, float time, CrewMember id)
@@ -446,9 +425,9 @@ void SpaceShip::CrewMember::examineCrew (int date, float time, CrewMember id)
     int testNum = 0;
     if (id.weight >= 70.0f)
     {
-        recordTest(date, time, testNum++); FIXME
-        date++; FIXME
-        time++; FIXME
+        recordTest(date, time, ++testNum);
+        ++date;
+        ++time;
     }
 }
 
@@ -459,33 +438,23 @@ bool SpaceShip::dock()
     {
         return true;
     }
-    else FIXME
-    {
-        return false;
-    }
+    return false;
 }
 void SpaceShip::makeLoop(int planetNum )
 {
-    planetNum++; FIXME
+    ++planetNum;
 }
 
 bool SpaceShip::takeOf(float startTime)
 {
     SpaceShip Rassvet;
-    startTime--; FIXME
-    if (Rassvet.orbitHeight != 0.0f)
-    {
-        return true;
-    } 
-    else FIXME
-    {
-        return false;
-    }
+    ++startTime;
+    return (Rassvet.orbitHeight != 0.0f);
 }
 
 void DAC::readInput(int channelNum)
 {
-    for (int i=0;i<channelNum;i++) FIXME
+    for ( int i = 0; i < channelNum; i++ )
     {
         checkError(i);
     }
@@ -494,14 +463,7 @@ void DAC::readInput(int channelNum)
 bool DAC::checkError(double sampleNum)
 {
     double originalValue = 3.141592;
-    if (sampleNum > originalValue || sampleNum < originalValue)
-    {
-        return false;
-    }
-    else FIXME
-    {
-        return true;
-    }
+    return !(sampleNum > originalValue || sampleNum < originalValue);
 }
 
 void DAC::audioOut(int channelNum)
@@ -510,7 +472,7 @@ void DAC::audioOut(int channelNum)
     
     //int bits = 24;
     
-    for (int i=0;i<channelNum;i++) FIXME
+    for ( int i = 0; i < channelNum; i++ )
     {
         ampLeft.doAmp(i);
         ampRight.doAmp(i);
@@ -520,25 +482,17 @@ void DAC::audioOut(int channelNum)
 
 bool PowerUnit::getElectricity(int outletStandart)
 {
-    if (outletStandart<3) return true; FIXME
-    return false;
+    return (outletStandart<3);
 }
 
 double PowerUnit::convertVoltage(double in, double out)
 {
-return std::abs(in - out); FIXME
+    return std::abs(in - out);
 }
 
 bool PowerUnit::status(int circuitId)
 {
-    if (circuitId == 0)
-    {
-        return false;
-    }
-    else FIXME
-    {
-        return true;
-    }
+    return !(circuitId == 0);
 }
 
 void VCA::attenuate(int coefficient)
@@ -558,14 +512,13 @@ void VCA::inputPower(int amountOfPower)
 
 int VCA::readKnob (int knobAngle)
 {
-    int gain = knobAngle * 1000; FIXME
-    return gain;
+    return knobAngle * 1000;
 }
 
 void HeadphoneAmp::getInput(int channelNum)
 {
     DAC DACLeft, DACRight;
-    for (int i=0;i<channelNum;i++) FIXME
+    for ( int i = 0; i < channelNum; i++ )
     {
         DACLeft.readInput(i);
         DACRight.readInput(i);
@@ -577,7 +530,7 @@ void HeadphoneAmp::doAmp(int channelNum)
 {
     VCA VCA0;
     //int output;
-    for (int i=0;i<channelNum;i++) FIXME
+    for ( int i = 0; i < channelNum; i++ )
     {
         VCA0.attenuate(1);
     }
@@ -586,28 +539,24 @@ void HeadphoneAmp::doAmp(int channelNum)
 
 bool HeadphoneAmp::noiseReduction(int filterNum)
 {
-    if(filterNum == 1) return true; FIXME
-    return false;
+    return (filterNum == 1);
 }
 
 bool Body::checkTheBolt(int circuitId)
 {
     //bool status;
-    if (circuitId == 0) return true; FIXME
-    return false;
+    return (circuitId == 0);
 }
 
 bool Body::checkShortCircuit(int circuitId)
 {
     //bool status;
-    if (circuitId == 0) return true; FIXME
-    return false;
-
+    return (circuitId == 0);
 }
 
 void Body::alarmOverDust(float time)
 {
-    time--; FIXME
+    ++time;
 }
 
 void MonitorController::setVol(int amount)
