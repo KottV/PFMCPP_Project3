@@ -334,20 +334,20 @@ void CanPlant::OfficeWorker::makeCall(int customerId, float time)
 {
     SipProvider sipnet;
     sipnet.makeCall(intNumber, customerId);
-    time++;
+    time++; FIXME
 }
 
 void CanPlant::OfficeWorker::pickCall(int number, float time)
 {
     //int recordedNumber = number;
     number = 0;
-    time++;
+    time++; FIXME
 }
 
 int CanPlant::OfficeWorker::reserveGood(int customerId, int amount)
 {
-    customerId++;
-    return amount++;
+    customerId++; FIXME
+    return amount++; FIXME
 }
 
 int CanPlant::produceCans(int fish, int tin)
@@ -358,8 +358,8 @@ int CanPlant::produceCans(int fish, int tin)
 
 void CanPlant::loadBoxes(int boxes, int wareHouseNumber)
 {
-    boxes++;
-    wareHouseNumber++;
+    boxes++; FIXME
+    wareHouseNumber++; FIXME
 }
 
 double CanPlant::reportScrapOut(double raw, double work)
@@ -373,7 +373,7 @@ bool SipProvider::makeCall(int src, int dst)
     {
         return false;
     }
-    else
+    else FIXME
     {
         return true;
     }
@@ -385,7 +385,7 @@ double SipProvider::chargeCustomer(double time, int customerId)
     {
         return 0;
     }
-    else
+    else FIXME
     {
         return time * price;
     }
@@ -400,18 +400,18 @@ void Cat::eat(char foodType)
 {
     if (foodType == 'F')
     {
-        Cat::mew(3);
+        Cat::mew(3); FIXME
     }
 }
 
 void Cat::sleep (float time)
 {
-    time--;
+    time--; FIXME
 }
 
 void Cat::mew (int count)
-{
-    count--;
+{ 
+    count--; FIXME
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
@@ -419,23 +419,23 @@ void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
     int testNum = 0;
     if (cat.liveNumber <= 9)
     {
-        recordTest(date, time, testNum++);
-    }
+        recordTest(date, time, testNum++); FIXME
+    } 
     
-    date++;
-    time++;
+    date++; FIXME
+    time++; FIXME
 }
 
 bool SpaceShip::CrewMember::recordTest(int date, float time, int testNum)
 {
-    date++;
-    time++;
+    date++; FIXME
+    time++; FIXME
     
     if (testNum !=0)
     {
         return true;
     }
-    else
+    else FIXME
     {
         return false;
     }
@@ -446,9 +446,9 @@ void SpaceShip::CrewMember::examineCrew (int date, float time, CrewMember id)
     int testNum = 0;
     if (id.weight >= 70.0f)
     {
-        recordTest(date, time, testNum++);
-        date++;
-        time++;
+        recordTest(date, time, testNum++); FIXME
+        date++; FIXME
+        time++; FIXME
     }
 }
 
@@ -459,25 +459,25 @@ bool SpaceShip::dock()
     {
         return true;
     }
-    else
+    else FIXME
     {
         return false;
     }
 }
 void SpaceShip::makeLoop(int planetNum )
 {
-    planetNum++;
+    planetNum++; FIXME
 }
 
 bool SpaceShip::takeOf(float startTime)
 {
     SpaceShip Rassvet;
-    startTime--;
+    startTime--; FIXME
     if (Rassvet.orbitHeight != 0.0f)
     {
         return true;
     } 
-    else
+    else FIXME
     {
         return false;
     }
@@ -485,7 +485,7 @@ bool SpaceShip::takeOf(float startTime)
 
 void DAC::readInput(int channelNum)
 {
-    for (int i=0;i<channelNum;i++)
+    for (int i=0;i<channelNum;i++) FIXME
     {
         checkError(i);
     }
@@ -498,7 +498,7 @@ bool DAC::checkError(double sampleNum)
     {
         return false;
     }
-    else
+    else FIXME
     {
         return true;
     }
@@ -510,7 +510,7 @@ void DAC::audioOut(int channelNum)
     
     //int bits = 24;
     
-    for (int i=0;i<channelNum;i++)
+    for (int i=0;i<channelNum;i++) FIXME
     {
         ampLeft.doAmp(i);
         ampRight.doAmp(i);
@@ -520,13 +520,13 @@ void DAC::audioOut(int channelNum)
 
 bool PowerUnit::getElectricity(int outletStandart)
 {
-    if (outletStandart<3) return true;
+    if (outletStandart<3) return true; FIXME
     return false;
 }
 
 double PowerUnit::convertVoltage(double in, double out)
 {
-return std::abs(in - out);
+return std::abs(in - out); FIXME
 }
 
 bool PowerUnit::status(int circuitId)
@@ -535,7 +535,7 @@ bool PowerUnit::status(int circuitId)
     {
         return false;
     }
-    else
+    else FIXME
     {
         return true;
     }
@@ -558,14 +558,14 @@ void VCA::inputPower(int amountOfPower)
 
 int VCA::readKnob (int knobAngle)
 {
-    int gain = knobAngle * 1000;
+    int gain = knobAngle * 1000; FIXME
     return gain;
 }
 
 void HeadphoneAmp::getInput(int channelNum)
 {
     DAC DACLeft, DACRight;
-    for (int i=0;i<channelNum;i++)
+    for (int i=0;i<channelNum;i++) FIXME
     {
         DACLeft.readInput(i);
         DACRight.readInput(i);
@@ -577,7 +577,7 @@ void HeadphoneAmp::doAmp(int channelNum)
 {
     VCA VCA0;
     //int output;
-    for (int i=0;i<channelNum;i++)
+    for (int i=0;i<channelNum;i++) FIXME
     {
         VCA0.attenuate(1);
     }
@@ -586,28 +586,28 @@ void HeadphoneAmp::doAmp(int channelNum)
 
 bool HeadphoneAmp::noiseReduction(int filterNum)
 {
-    if(filterNum == 1) return true;
+    if(filterNum == 1) return true; FIXME
     return false;
 }
 
 bool Body::checkTheBolt(int circuitId)
 {
     //bool status;
-    if (circuitId == 0) return true;
+    if (circuitId == 0) return true; FIXME
     return false;
 }
 
 bool Body::checkShortCircuit(int circuitId)
 {
     //bool status;
-    if (circuitId == 0) return true;
+    if (circuitId == 0) return true; FIXME
     return false;
 
 }
 
 void Body::alarmOverDust(float time)
 {
-    time--;
+    time--; FIXME
 }
 
 void MonitorController::setVol(int amount)
