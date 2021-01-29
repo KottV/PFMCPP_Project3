@@ -121,16 +121,16 @@ int stepSize(int speed)
     
     if (speed <=3)
     {
-         return 3;
-     }
-     else if (speed >= 15)
-     {
-         return 15;
-     }
-     else
-     {
-         return speed;
-     }
+        return 3;
+    }
+    else if (speed >= 15)
+    {
+        return 15;
+    }
+    else
+    {
+        return speed;
+    }
 }
     
 struct Person
@@ -383,11 +383,11 @@ double SipProvider::chargeCustomer(double time, int customerId)
 {
     if (customerId == 0)
     {
-    return 0;
+        return 0;
     }
     else
     {
-    return time * price;
+        return time * price;
     }
 }
 
@@ -400,7 +400,7 @@ void Cat::eat(char foodType)
 {
     if (foodType == 'F')
     {
-    Cat::mew(3);
+        Cat::mew(3);
     }
 }
 
@@ -419,7 +419,7 @@ void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
     int testNum = 0;
     if (cat.liveNumber <= 9)
     {
-    recordTest(date, time, testNum++);
+        recordTest(date, time, testNum++);
     }
     
     date++;
@@ -433,11 +433,11 @@ bool SpaceShip::CrewMember::recordTest(int date, float time, int testNum)
     
     if (testNum !=0)
     {
-    return true;
+        return true;
     }
     else
     {
-    return false;
+        return false;
     }
 }
 
@@ -457,11 +457,11 @@ bool SpaceShip::dock()
     SpaceShip Rassvet;
     if (Rassvet.orbitHeight != 40.0f)
     {
-    return true;
+        return true;
     }
     else
     {
-    return false;
+        return false;
     }
 }
 void SpaceShip::makeLoop(int planetNum )
@@ -475,11 +475,11 @@ bool SpaceShip::takeOf(float startTime)
     startTime--;
     if (Rassvet.orbitHeight != 0.0f)
     {
-    return true;
-    }
+        return true;
+    } 
     else
     {
-    return false;
+        return false;
     }
 }
 
@@ -487,7 +487,7 @@ void DAC::readInput(int channelNum)
 {
     for (int i=0;i<channelNum;i++)
     {
-    checkError(i);
+        checkError(i);
     }
 }
 
@@ -496,11 +496,11 @@ bool DAC::checkError(double sampleNum)
     double originalValue = 3.141592;
     if (sampleNum > originalValue || sampleNum < originalValue)
     {
-    return false;
+        return false;
     }
     else
     {
-    return true;
+        return true;
     }
 }
 
@@ -533,11 +533,11 @@ bool PowerUnit::status(int circuitId)
 {
     if (circuitId == 0)
     {
-    return false;
+        return false;
     }
     else
     {
-    return true;
+        return true;
     }
 }
 
@@ -552,7 +552,7 @@ void VCA::inputPower(int amountOfPower)
     PowerUnit PSU0;
     if (amountOfPower < 20)
     {
-    PSU0.getElectricity(2);
+        PSU0.getElectricity(2);
     }
 }
 
@@ -579,7 +579,7 @@ void HeadphoneAmp::doAmp(int channelNum)
     //int output;
     for (int i=0;i<channelNum;i++)
     {
-    VCA0.attenuate(1);
+        VCA0.attenuate(1);
     }
 
 }
