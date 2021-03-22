@@ -403,7 +403,8 @@ void Cat::sleep (float time)
 void Cat::mew (int count)
 { 
 //    --count;
-    for (int i=1;i<=count;++i) std::cout<<"mew"<<i<<std::endl;
+    for (int i=1;i<=count;++i)
+    std::cout<<"mew"<<i<<std::endl;
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
