@@ -93,20 +93,20 @@ struct CanPlant
 
 CanPlant::CanPlant()
 {
-    int tinAmount = 1000;
-    double rawFish = 100.21;
-    int autoclaveLoad = 300;
-    int dayCansOut = 900;
-    float workHours = 12;
+    tinAmount = 1000;
+    rawFish = 100.21;
+    autoclaveLoad = 300;
+    dayCansOut = 900;
+    workHours = 12;
 }
 
 CanPlant::OfficeWorker::OfficeWorker()
 {
-    int callOperatorId = 1;
-    int intNumber = 1301;
-    std::string operatorName = "Elena";
-    float hourStart = 5.5f;
-    float hourEnd = 12.0f;
+    callOperatorId = 1;
+    intNumber = 1301;
+    operatorName = "Elena";
+    hourStart = 5.5f;
+    hourEnd = 12.0f;
 }
 
 struct SipProvider
@@ -125,11 +125,11 @@ struct SipProvider
 
 SipProvider::SipProvider()
 {
-    std::string codecName = "G729";
-    int calls = 2;
-    bool t38 = false;
-    double price = 0;
-    int slaType = 1;
+    codecName = "G729";
+    calls = 2;
+    t38 = false;
+    price = 0;
+    slaType = 1;
 }
 
 struct Cat
@@ -148,11 +148,11 @@ struct Cat
 
 Cat::Cat()
 {
-    int paw = 4;
-    char colour = 'B';
-    bool gender = 0; //0 female, 1 male
-    float age = 3.5f;
-    int liveNumber = 1;
+    paw = 4;
+    colour = 'B';
+    gender = 0; //0 female, 1 male
+    age = 3.5f;
+    liveNumber = 1;
 }
 
 struct SpaceShip
@@ -185,20 +185,20 @@ struct SpaceShip
 
 SpaceShip::SpaceShip()
 {
-    float orbitHeight = 1000;
-    std::string engineType = "rocket";
-    int crewNum = 3;
-    std::string country = "RU";
-    std::string name = "Salyut";
+    orbitHeight = 1000;
+    engineType = "rocket";
+    crewNum = 3;
+    country = "RU";
+    name = "Salyut";
 }
 
 SpaceShip::CrewMember::CrewMember()
 {
-        int memberId = 0;
-        std::string name = "Rob";
-        std::string jobRole = "scientist";
-        float weight = 70.0f;
-        float age =33.3f;
+    memberId = 0;
+    name = "Rob";
+    jobRole = "scientist";
+    weight = 70.0f;
+    age =33.3f;
 }
 
 struct DAC
@@ -217,11 +217,11 @@ struct DAC
 
 DAC::DAC()
 {
-    int sampleRate = 48000;
-    int bitDepth = 24;
-    int SNR = 112;
-    float amountOfPowerConsumed = 0.9f;
-    double dynamicRange = 9.9;
+    sampleRate = 48000;
+    bitDepth = 24;
+    SNR = 112;
+    amountOfPowerConsumed = 0.9f;
+    dynamicRange = 9.9;
 }
 
 struct PowerUnit
@@ -240,11 +240,11 @@ struct PowerUnit
 
 PowerUnit::PowerUnit()
 {
-    float weight = 1.2f;
-    double outVolt = 12;
-    double inVolt = 220;
-    int outCurrent = 1;
-    int maxOutTemp = 80;
+    weight = 1.2f;
+    outVolt = 12;
+    inVolt = 220;
+    outCurrent = 1;
+    maxOutTemp = 80;
 }
 
 struct VCA
@@ -263,11 +263,11 @@ struct VCA
 
 VCA::VCA()
 {
-    float freqResponse = 0.5f;
-    double insertLoss = 0.01;
-    int attenuation = -100;
-    float price = 3;
-    int channelNum = 2;
+    freqResponse = 0.5f;
+    insertLoss = 0.01;
+    attenuation = -100;
+    price = 3;
+    channelNum = 2;
 }
 
 struct HeadphoneAmp
@@ -286,11 +286,11 @@ struct HeadphoneAmp
 
 HeadphoneAmp::HeadphoneAmp()
 {
-    int SNR = 112;
-    float outPower = 600.0f;
-    int outImpendance = 32;
-    int maxFreq = 20000;
-    double inVolt = 12;
+    SNR = 112;
+    outPower = 600.0f;
+    outImpendance = 32;
+    maxFreq = 20000;
+    inVolt = 12;
 }
 
 struct Body
@@ -309,11 +309,11 @@ struct Body
 
 Body::Body()
 {
-    float height = 6.5f;
-    float width = 15.0f;
-    float depth = 10.5f;
-    char colour = 'B';
-    char material = 'W';
+    height = 6.5f;
+    width = 15.0f;
+    depth = 10.5f;
+    colour = 'B';
+    material = 'W';
 }
 
 struct MonitorController
@@ -325,7 +325,7 @@ struct MonitorController
     HeadphoneAmp AmpLeft;
     HeadphoneAmp AmpRight;
     Body body0;
-    MonitorController(){};
+    MonitorController(){}
 
     void setVol(int amount = 0);
     bool selectSource(int sourceNum, bool status=0);
@@ -403,7 +403,7 @@ void Cat::sleep (float time)
 void Cat::mew (int count)
 { 
 //    --count;
-    for (int i=0;i<=count;++i) std::cout<<"mew"<<i<<std::endl;
+    for (int i=1;i<=count;++i) std::cout<<"mew"<<i<<std::endl;
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
@@ -614,8 +614,14 @@ bool MonitorController::toggleCrossfeed(bool status)
 #include <iostream>
 int main()
 {
-    Cat Musya;
+    Cat Pusya;
+    SpaceShip::CrewMember Doc;
+    Doc.name = "Aybolit";
     
-    Musya.mew(3);
+    Doc.examineAnimal(2, 0.5f, Pusya);
+    Pusya.mew(3);
+    
+    std::cout << "What is doc's name? - "<<Doc.name<<"\n";
+    
     std::cout << "good to go!" << std::endl;
 }
