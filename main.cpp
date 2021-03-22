@@ -617,11 +617,12 @@ int main()
     Cat Pusya;
     SpaceShip::CrewMember Doc;
     Doc.name = "Aybolit";
+    CanPlant::OfficeWorker worker;
     
     Doc.examineAnimal(2, 0.5f, Pusya);
     Pusya.mew(3);
     
     std::cout << "What is doc's name? - "<<Doc.name<<"\n";
-    
+    std::cout << "How much boxes reserved? " << worker.reserveGood(100, 1) << std::endl;
     std::cout << "good to go!" << std::endl;
 }
