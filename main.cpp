@@ -206,11 +206,13 @@ struct PowerUnit
     double inVolt;
     double outVolt { 12.0 };
     int outCurrent;
-    int maxOutTemp;
-    PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1), maxOutTemp (80) {}
+    int maxOutTemp { 80 };
+    PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1){}
     void printStatus()
     {
-        std::cout<<"Power Unit Status:"<<"\n"<<"inV:"<<inVolt<<std::endl;
+        std::cout<<"Power Unit Status:"<<std::endl;
+        std::cout<<"inV:"<<inVolt<<std::endl;
+        std::cout<<"outV:"<<outVolt<<std::endl;
     }
      
     bool getElectricity(int outletStandart=1);
@@ -586,11 +588,9 @@ bool MonitorController::toggleCrossfeed(bool status)
 #include <iostream>
 int main()
 {
-//    Example::main();
+    Example::main();
     PowerUnit powerunit;
     powerunit.printStatus();
 
-//    std::cout << "What is doc's name? - "<<Doc.name<<"\n";
-//    std::cout << "How much boxes reserved? " << worker.reserveGood(100, 1) << std::endl;
     std::cout << "good to go!" << std::endl;
 }
