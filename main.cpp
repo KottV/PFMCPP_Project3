@@ -203,25 +203,20 @@ DAC::DAC()
 struct PowerUnit
 {
     float weight;
-    double outVolt;
     double inVolt;
+    double outVolt { 12.0 };
     int outCurrent;
     int maxOutTemp;
-    PowerUnit();
+    PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1), maxOutTemp (80) {}
+    void printStatus()
+    {
+        std::cout<<"Power Unit Status:"<<"\n"<<"inV:"<<inVolt<<std::endl;
+    }
      
     bool getElectricity(int outletStandart=1);
     double convertVoltage(double inVolt, double outVolt);
     bool status(int circuitId = 1);
 };
-
-PowerUnit::PowerUnit()
-{
-    weight = 1.2f;
-    outVolt = 12;
-    inVolt = 220;
-    outCurrent = 1;
-    maxOutTemp = 80;
-}
 
 struct VCA
 {
@@ -591,16 +586,11 @@ bool MonitorController::toggleCrossfeed(bool status)
 #include <iostream>
 int main()
 {
-    Example::main();
-    Cat Pusya;
-    SpaceShip::CrewMember Doc;
-    Doc.name = "Aybolit";
-    CanPlant::OfficeWorker worker;
-    
-    Doc.examineAnimal(2, 0.5f, Pusya);
-    Pusya.mew(3);
-    
-    std::cout << "What is doc's name? - "<<Doc.name<<"\n";
-    std::cout << "How much boxes reserved? " << worker.reserveGood(100, 1) << std::endl;
+//    Example::main();
+    PowerUnit powerunit;
+    powerunit.printStatus();
+
+//    std::cout << "What is doc's name? - "<<Doc.name<<"\n";
+//    std::cout << "How much boxes reserved? " << worker.reserveGood(100, 1) << std::endl;
     std::cout << "good to go!" << std::endl;
 }
