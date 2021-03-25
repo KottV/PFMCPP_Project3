@@ -79,6 +79,7 @@ struct SipProvider
     int calls;
     bool t38;
     double price;
+    double balance { -1 };
     int slaType;
     SipProvider() :
         calls(2),
@@ -87,6 +88,7 @@ struct SipProvider
         slaType(1)
     {}
     
+    void printStatus () { std::cout << "trunk: " << ( balance < 0 ? "offline" : "online" ) << std::endl; }
     bool makeCall(int src, int dst);
     double chargeCustomer(double time, int customerId);
     double traficCount(double time);
@@ -264,8 +266,7 @@ struct MonitorController
 
 void CanPlant::OfficeWorker::makeCall(int customerId, float time)
 {
-    SipProvider sipnet;
-    sipnet.makeCall(intNumber, customerId);
+    makeCall(intNumber, customerId);
     ++time;
 }
 
@@ -370,8 +371,8 @@ void SpaceShip::CrewMember::examineCrew (int date, float time, CrewMember id)
 
 bool SpaceShip::dock()
 {
-    SpaceShip Rassvet;
-    if (Rassvet.orbitHeight != 40.0f)
+    //SpaceShip Rassvet;
+    if (orbitHeight != 40.0f)
     {
         return true;
     }
@@ -384,9 +385,9 @@ void SpaceShip::makeLoop(int planetNum )
 
 bool SpaceShip::takeOf(float startTime)
 {
-    SpaceShip Rassvet;
+    //SpaceShip Rassvet;
     ++startTime;
-    return (Rassvet.orbitHeight != 0.0f);
+    return (orbitHeight != 0.0f);
 }
 
 void DAC::readInput(int channelNum)
@@ -540,17 +541,46 @@ bool MonitorController::toggleCrossfeed(bool status)
  send me a DM to review your pull request when the project is ready for review.
 
  Wait for my code review.
- */
+ */ 
 
 #include <iostream>
 int main()
 {
     Example::main();
+    Cat Pusya;
+    SipProvider sipnet;
+    SpaceShip Proton;
     PowerUnit powerunit;
     DAC dacLeft;
+    
+    std::cout << "\nSIP trunk status:" << std::endl;
+    sipnet.printStatus ();
+    
+    std::cout << "\n";
     powerunit.printStatus();
-    std::cout << "DAC status:" << dacLeft.checkError(440) << std::endl;
-
+    
+    std::cout << "\nDAC status: " << dacLeft.checkError(440) << std::endl;
+    
+    
+    std::cout << "\nShip status: \n" ;
+    std::cout << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
+    
+    std::cout << "\nCat attributes:" << "\n" 
+    << "colour: " << Pusya.colour << "\n"
+    << "age: " << Pusya.age << "\n"
+    << "gender: "<< ( Pusya.gender == 0 ? "Girl" : "Boy" ) << std::endl;
+    
+    Pusya.mew (3);
+    
+    // fill balance
+    sipnet.balance = 100;
+    std::cout << "\nSIP trunk status:" << std::endl;
+    sipnet.printStatus ();
+    
+    // dock the ship
+    std::cout << "\nShip status:" ;
+    Proton.orbitHeight = 40;
+    std::cout << "\n" << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
     //
     std::cout << "good to go!" << std::endl;
 }
