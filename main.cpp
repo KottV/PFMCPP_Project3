@@ -144,6 +144,7 @@ struct SpaceShip
 };
 
 SpaceShip::SpaceShip() {}
+SpaceShip::CrewMember::CrewMember() {}
 
 struct DAC
 {
@@ -152,21 +153,18 @@ struct DAC
     int SNR;
     float amountOfPowerConsumed;
     double dynamicRange;
-    DAC();
+    DAC() :
+        sampleRate(48000),
+        bitDepth(24),
+        SNR(112),
+        amountOfPowerConsumed(0.9f),
+        dynamicRange(9.9)
+    {}
     
     void readInput(int channelNum = 0);
     bool checkError(double sampleNum);
     void audioOut(int channelNum = 0);
 };
-
-DAC::DAC()
-{
-    sampleRate = 48000;
-    bitDepth = 24;
-    SNR = 112;
-    amountOfPowerConsumed = 0.9f;
-    dynamicRange = 9.9;
-}
 
 struct PowerUnit
 {
@@ -195,21 +193,18 @@ struct VCA
     int attenuation;
     float price;
     int channelNum;
-    VCA();
+    VCA() :
+        freqResponse(0.5f),
+        insertLoss(0.01),
+        attenuation(-100),
+        price(3),
+        channelNum(2)
+    {}
     
     void attenuate(int coefficient = -50);
     void inputPower(int amountOfPower = 20);
     int readKnob (int knobAngle = 10);
 };
-
-VCA::VCA()
-{
-    freqResponse = 0.5f;
-    insertLoss = 0.01;
-    attenuation = -100;
-    price = 3;
-    channelNum = 2;
-}
 
 struct HeadphoneAmp
 {
@@ -218,21 +213,18 @@ struct HeadphoneAmp
     int outImpendance;
     int maxFreq;
     double inVolt;
-    HeadphoneAmp();
+    HeadphoneAmp() :
+        SNR(112),
+        outPower(600.0f),
+        outImpendance(32),
+        maxFreq(20000),
+        inVolt(12)
+    {}
     
     void getInput(int channelNum = 0);
     void doAmp(int channelNum = 0);
     bool noiseReduction(int filterNum = 3);
 };
-
-HeadphoneAmp::HeadphoneAmp()
-{
-    SNR = 112;
-    outPower = 600.0f;
-    outImpendance = 32;
-    maxFreq = 20000;
-    inVolt = 12;
-}
 
 struct Body
 {
@@ -241,21 +233,18 @@ struct Body
     float depth;
     char colour;
     char material;
-    Body();
+    Body() :
+        height(6.5f),
+        width(15.0f),
+        depth(10.5f),
+        colour('B'),
+        material('W')
+    {}
     
     bool checkTheBolt(int circuitId = 1);
     bool checkShortCircuit(int circuitId = 1);
     void alarmOverDust(float time = 10);
 };
-
-Body::Body()
-{
-    height = 6.5f;
-    width = 15.0f;
-    depth = 10.5f;
-    colour = 'B';
-    material = 'W';
-}
 
 struct MonitorController
 {
@@ -345,7 +334,7 @@ void Cat::mew (int count)
 { 
 //    --count;
     for (int i=1;i<=count;++i)
-    std::cout<<"mew"<<i<<std::endl;
+    std::cout << "mew" << i << std::endl;
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
@@ -558,7 +547,10 @@ int main()
 {
     Example::main();
     PowerUnit powerunit;
+    DAC dacLeft;
     powerunit.printStatus();
+    std::cout << "DAC status:" << dacLeft.checkError(440) << std::endl;
 
+    //
     std::cout << "good to go!" << std::endl;
 }
