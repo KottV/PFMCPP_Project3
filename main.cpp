@@ -143,6 +143,8 @@ struct SpaceShip
     bool takeOf(float startTime);
 };
 
+SpaceShip::SpaceShip() {}
+
 struct DAC
 {
     int sampleRate;
