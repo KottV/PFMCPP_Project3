@@ -46,16 +46,22 @@ struct CanPlant
     int autoclaveLoad;
     int dayCansOut;
     float workHours;
-    CanPlant();
+    CanPlant() :
+        tinAmount(1000),
+        rawFish(100.21),
+        autoclaveLoad(300),
+        dayCansOut(900),
+        workHours(12)
+    {}
     
     struct OfficeWorker
     {
-        int callOperatorId;
-        int intNumber;
+        int callOperatorId{ 1 };
+        int intNumber{ 1301 };
         std::string operatorName;
-        float hourStart;
-        float hourEnd;
-        OfficeWorker();
+        float hourStart{ 5.5f };
+        float hourEnd{ 12.0f };
+        OfficeWorker() : operatorName("Elena") {}
         
         void makeCall(int customerId = 0, float time = 0);
         void pickCall(int number, float time);
@@ -67,46 +73,24 @@ struct CanPlant
     double reportScrapOut(double rawFish, double workHours);
 };
 
-CanPlant::CanPlant()
-{
-    tinAmount = 1000;
-    rawFish = 100.21;
-    autoclaveLoad = 300;
-    dayCansOut = 900;
-    workHours = 12;
-}
-
-CanPlant::OfficeWorker::OfficeWorker()
-{
-    callOperatorId = 1;
-    intNumber = 1301;
-    operatorName = "Elena";
-    hourStart = 5.5f;
-    hourEnd = 12.0f;
-}
-
 struct SipProvider
 {
-    std::string codecName;
+    std::string codecName{ "G729" };
     int calls;
     bool t38;
     double price;
     int slaType;
-    SipProvider();
+    SipProvider() :
+        calls(2),
+        t38(false),
+        price(0),
+        slaType(1)
+    {}
     
     bool makeCall(int src, int dst);
     double chargeCustomer(double time, int customerId);
     double traficCount(double time);
 };
-
-SipProvider::SipProvider()
-{
-    codecName = "G729";
-    calls = 2;
-    t38 = false;
-    price = 0;
-    slaType = 1;
-}
 
 struct Cat
 {
@@ -133,20 +117,20 @@ Cat::Cat()
 
 struct SpaceShip
 {
-    float orbitHeight;
-    std::string engineType;
-    int crewNum;
-    std::string country;
-    std::string name;
+    float orbitHeight{ 1000.f };
+    std::string engineType{ "rocket" };
+    int crewNum{ 3 };
+    std::string country{ "RU" };
+    std::string name{ "Salyut" };
     SpaceShip();
     
     struct CrewMember
     {
-        int memberId;
-        std::string name;
-        std::string jobRole;
-        float weight;
-        float age;
+        int memberId{ 0 };
+        std::string name{ "Rob" };
+        std::string jobRole{ "scientist" };
+        float weight{ 70.f };
+        float age{ 33.3f };
         CrewMember();
         
         void examineAnimal(int date, float time, Cat cat);
@@ -158,24 +142,6 @@ struct SpaceShip
     void makeLoop(int planetNum = 3);
     bool takeOf(float startTime);
 };
-
-SpaceShip::SpaceShip()
-{
-    orbitHeight = 1000;
-    engineType = "rocket";
-    crewNum = 3;
-    country = "RU";
-    name = "Salyut";
-}
-
-SpaceShip::CrewMember::CrewMember()
-{
-    memberId = 0;
-    name = "Rob";
-    jobRole = "scientist";
-    weight = 70.0f;
-    age =33.3f;
-}
 
 struct DAC
 {
