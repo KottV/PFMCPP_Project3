@@ -266,7 +266,8 @@ struct MonitorController
 
 void CanPlant::OfficeWorker::makeCall(int customerId, float time)
 {
-    makeCall(intNumber, customerId);
+    SipProvider sipnet;
+    sipnet.makeCall(intNumber, customerId);
     ++time;
 }
 
