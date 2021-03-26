@@ -1,1 +1,9 @@
 a.out
+/.vs
+/Release
+/.editorconfig
+/PFMCPP_Project3.vcxproj.user
+/PFMCPP_Project3.vcxproj.filters
+/PFMCPP_Project3.vcxproj
+/PFMCPP_Project3.sln
+/CppProperties.json

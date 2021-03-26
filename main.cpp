@@ -46,16 +46,22 @@ struct CanPlant
     int autoclaveLoad;
     int dayCansOut;
     float workHours;
-    CanPlant();
+    CanPlant() :
+        tinAmount(1000),
+        rawFish(100.21),
+        autoclaveLoad(300),
+        dayCansOut(900),
+        workHours(12)
+    {}
     
     struct OfficeWorker
     {
-        int callOperatorId;
-        int intNumber;
+        int callOperatorId{ 1 };
+        int intNumber{ 1301 };
         std::string operatorName;
-        float hourStart;
-        float hourEnd;
-        OfficeWorker();
+        float hourStart{ 5.5f };
+        float hourEnd{ 12.0f };
+        OfficeWorker() : operatorName("Elena") {}
         
         void makeCall(int customerId = 0, float time = 0);
         void pickCall(int number, float time);
@@ -67,46 +73,26 @@ struct CanPlant
     double reportScrapOut(double rawFish, double workHours);
 };
 
-CanPlant::CanPlant()
-{
-    tinAmount = 1000;
-    rawFish = 100.21;
-    autoclaveLoad = 300;
-    dayCansOut = 900;
-    workHours = 12;
-}
-
-CanPlant::OfficeWorker::OfficeWorker()
-{
-    callOperatorId = 1;
-    intNumber = 1301;
-    operatorName = "Elena";
-    hourStart = 5.5f;
-    hourEnd = 12.0f;
-}
-
 struct SipProvider
 {
-    std::string codecName;
+    std::string codecName{ "G729" };
     int calls;
     bool t38;
     double price;
+    double balance { -1 };
     int slaType;
-    SipProvider();
+    SipProvider() :
+        calls(2),
+        t38(false),
+        price(0),
+        slaType(1)
+    {}
     
+    void printStatus () { std::cout << "trunk: " << ( balance < 0 ? "offline" : "online" ) << std::endl; }
     bool makeCall(int src, int dst);
     double chargeCustomer(double time, int customerId);
     double traficCount(double time);
 };
-
-SipProvider::SipProvider()
-{
-    codecName = "G729";
-    calls = 2;
-    t38 = false;
-    price = 0;
-    slaType = 1;
-}
 
 struct Cat
 {
@@ -133,20 +119,20 @@ Cat::Cat()
 
 struct SpaceShip
 {
-    float orbitHeight;
-    std::string engineType;
-    int crewNum;
-    std::string country;
-    std::string name;
+    float orbitHeight{ 1000.f };
+    std::string engineType{ "rocket" };
+    int crewNum{ 3 };
+    std::string country{ "RU" };
+    std::string name{ "Salyut" };
     SpaceShip();
     
     struct CrewMember
     {
-        int memberId;
-        std::string name;
-        std::string jobRole;
-        float weight;
-        float age;
+        int memberId{ 0 };
+        std::string name{ "Rob" };
+        std::string jobRole{ "scientist" };
+        float weight{ 70.f };
+        float age{ 33.3f };
         CrewMember();
         
         void examineAnimal(int date, float time, Cat cat);
@@ -159,23 +145,8 @@ struct SpaceShip
     bool takeOf(float startTime);
 };
 
-SpaceShip::SpaceShip()
-{
-    orbitHeight = 1000;
-    engineType = "rocket";
-    crewNum = 3;
-    country = "RU";
-    name = "Salyut";
-}
-
-SpaceShip::CrewMember::CrewMember()
-{
-    memberId = 0;
-    name = "Rob";
-    jobRole = "scientist";
-    weight = 70.0f;
-    age =33.3f;
-}
+SpaceShip::SpaceShip() {}
+SpaceShip::CrewMember::CrewMember() {}
 
 struct DAC
 {
@@ -184,44 +155,38 @@ struct DAC
     int SNR;
     float amountOfPowerConsumed;
     double dynamicRange;
-    DAC();
+    DAC() :
+        sampleRate(48000),
+        bitDepth(24),
+        SNR(112),
+        amountOfPowerConsumed(0.9f),
+        dynamicRange(9.9)
+    {}
     
     void readInput(int channelNum = 0);
     bool checkError(double sampleNum);
     void audioOut(int channelNum = 0);
 };
 
-DAC::DAC()
-{
-    sampleRate = 48000;
-    bitDepth = 24;
-    SNR = 112;
-    amountOfPowerConsumed = 0.9f;
-    dynamicRange = 9.9;
-}
-
 struct PowerUnit
 {
     float weight;
-    double outVolt;
     double inVolt;
+    double outVolt { 12.0 };
     int outCurrent;
-    int maxOutTemp;
-    PowerUnit();
+    int maxOutTemp { 80 };
+    PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1){}
+    void printStatus()
+    {
+        std::cout<<"Power Unit Status:"<<std::endl;
+        std::cout<<"inV:"<<inVolt<<std::endl;
+        std::cout<<"outV:"<<outVolt<<std::endl;
+    }
      
     bool getElectricity(int outletStandart=1);
     double convertVoltage(double inVolt, double outVolt);
     bool status(int circuitId = 1);
 };
-
-PowerUnit::PowerUnit()
-{
-    weight = 1.2f;
-    outVolt = 12;
-    inVolt = 220;
-    outCurrent = 1;
-    maxOutTemp = 80;
-}
 
 struct VCA
 {
@@ -230,21 +195,18 @@ struct VCA
     int attenuation;
     float price;
     int channelNum;
-    VCA();
+    VCA() :
+        freqResponse(0.5f),
+        insertLoss(0.01),
+        attenuation(-100),
+        price(3),
+        channelNum(2)
+    {}
     
     void attenuate(int coefficient = -50);
     void inputPower(int amountOfPower = 20);
     int readKnob (int knobAngle = 10);
 };
-
-VCA::VCA()
-{
-    freqResponse = 0.5f;
-    insertLoss = 0.01;
-    attenuation = -100;
-    price = 3;
-    channelNum = 2;
-}
 
 struct HeadphoneAmp
 {
@@ -253,21 +215,18 @@ struct HeadphoneAmp
     int outImpendance;
     int maxFreq;
     double inVolt;
-    HeadphoneAmp();
+    HeadphoneAmp() :
+        SNR(112),
+        outPower(600.0f),
+        outImpendance(32),
+        maxFreq(20000),
+        inVolt(12)
+    {}
     
     void getInput(int channelNum = 0);
     void doAmp(int channelNum = 0);
     bool noiseReduction(int filterNum = 3);
 };
-
-HeadphoneAmp::HeadphoneAmp()
-{
-    SNR = 112;
-    outPower = 600.0f;
-    outImpendance = 32;
-    maxFreq = 20000;
-    inVolt = 12;
-}
 
 struct Body
 {
@@ -276,21 +235,18 @@ struct Body
     float depth;
     char colour;
     char material;
-    Body();
+    Body() :
+        height(6.5f),
+        width(15.0f),
+        depth(10.5f),
+        colour('B'),
+        material('W')
+    {}
     
     bool checkTheBolt(int circuitId = 1);
     bool checkShortCircuit(int circuitId = 1);
     void alarmOverDust(float time = 10);
 };
-
-Body::Body()
-{
-    height = 6.5f;
-    width = 15.0f;
-    depth = 10.5f;
-    colour = 'B';
-    material = 'W';
-}
 
 struct MonitorController
 {
@@ -380,7 +336,7 @@ void Cat::mew (int count)
 { 
 //    --count;
     for (int i=1;i<=count;++i)
-    std::cout<<"mew"<<i<<std::endl;
+    std::cout << "mew" << i << std::endl;
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
@@ -416,8 +372,8 @@ void SpaceShip::CrewMember::examineCrew (int date, float time, CrewMember id)
 
 bool SpaceShip::dock()
 {
-    SpaceShip Rassvet;
-    if (Rassvet.orbitHeight != 40.0f)
+    //SpaceShip Rassvet;
+    if (orbitHeight != 40.0f)
     {
         return true;
     }
@@ -430,9 +386,9 @@ void SpaceShip::makeLoop(int planetNum )
 
 bool SpaceShip::takeOf(float startTime)
 {
-    SpaceShip Rassvet;
+    //SpaceShip Rassvet;
     ++startTime;
-    return (Rassvet.orbitHeight != 0.0f);
+    return (orbitHeight != 0.0f);
 }
 
 void DAC::readInput(int channelNum)
@@ -586,21 +542,46 @@ bool MonitorController::toggleCrossfeed(bool status)
  send me a DM to review your pull request when the project is ready for review.
 
  Wait for my code review.
- */
+ */ 
 
 #include <iostream>
 int main()
 {
     Example::main();
     Cat Pusya;
-    SpaceShip::CrewMember Doc;
-    Doc.name = "Aybolit";
-    CanPlant::OfficeWorker worker;
+    SipProvider sipnet;
+    SpaceShip Proton;
+    PowerUnit powerunit;
+    DAC dacLeft;
     
-    Doc.examineAnimal(2, 0.5f, Pusya);
-    Pusya.mew(3);
+    std::cout << "\nSIP trunk status:" << std::endl;
+    sipnet.printStatus ();
     
-    std::cout << "What is doc's name? - "<<Doc.name<<"\n";
-    std::cout << "How much boxes reserved? " << worker.reserveGood(100, 1) << std::endl;
+    std::cout << "\n";
+    powerunit.printStatus();
+    
+    std::cout << "\nDAC status: " << dacLeft.checkError(440) << std::endl;
+    
+    
+    std::cout << "\nShip status: \n" ;
+    std::cout << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
+    
+    std::cout << "\nCat attributes:" << "\n" 
+    << "colour: " << Pusya.colour << "\n"
+    << "age: " << Pusya.age << "\n"
+    << "gender: "<< ( Pusya.gender == 0 ? "Girl" : "Boy" ) << std::endl;
+    
+    Pusya.mew (3);
+    
+    // fill balance
+    sipnet.balance = 100;
+    std::cout << "\nSIP trunk status:" << std::endl;
+    sipnet.printStatus ();
+    
+    // dock the ship
+    std::cout << "\nShip status:" ;
+    Proton.orbitHeight = 40;
+    std::cout << "\n" << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
+    //
     std::cout << "good to go!" << std::endl;
 }
