@@ -178,9 +178,9 @@ struct PowerUnit
     PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1){}
     void printStatus()
     {
-        std::cout<<"Power Unit Status:"<<std::endl;
-        std::cout<<"inV:"<<inVolt<<std::endl;
-        std::cout<<"outV:"<<outVolt<<std::endl;
+        std::cout << "Power Unit Status:" << std::endl;
+        std::cout << "inV:" << inVolt << std::endl;
+        std::cout << "outV:" << outVolt << std::endl;
     }
      
     bool getElectricity(int outletStandart=1);
