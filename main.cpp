@@ -150,6 +150,7 @@ struct SpaceShip
     float orbitHeight{ 1000.f };
     std::string engineType{ "rocket" };
     int crewNum{ 3 };
+    int totalLoops = 0;
     std::string country{ "RU" };
     std::string name{ "Salyut" };
     SpaceShip();
@@ -169,7 +170,7 @@ struct SpaceShip
     };
 
     bool dock();
-    void makeLoop(int planetNum = 3);
+    int makeLoop(int planetNum = 3, int loopCount = 1);
     bool takeOf(float startTime);
 };
 
@@ -407,9 +408,15 @@ bool SpaceShip::dock()
     }
     return false;
 }
-void SpaceShip::makeLoop(int planetNum )
+int SpaceShip::makeLoop(int planetNum, int loopCount )
 {
-    ++planetNum;
+    int loop = 0;
+    while (loop <= loopCount)
+    {
+        ++loop;
+    }
+    this->totalLoops = loop;
+    return loop;
 }
 
 bool SpaceShip::takeOf(float startTime)
@@ -576,40 +583,12 @@ bool MonitorController::toggleCrossfeed(bool status)
 int main()
 {
     Example::main();
-    Cat Pusya;
-    SipProvider sipnet;
     SpaceShip Proton;
-    PowerUnit powerunit;
-    DAC dacLeft;
-    
-    std::cout << "\nSIP trunk status:" << std::endl;
-    sipnet.printStatus ();
-    
-    std::cout << "\n";
-    powerunit.printStatus();
-    
-    std::cout << "\nDAC status: " << dacLeft.checkError(440) << std::endl;
-    
-    
-    std::cout << "\nShip status: \n" ;
-    std::cout << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
-    
-    std::cout << "\nCat attributes:" << "\n" 
-    << "colour: " << Pusya.colour << "\n"
-    << "age: " << Pusya.age << "\n"
-    << "gender: "<< ( Pusya.gender == 0 ? "Girl" : "Boy" ) << std::endl;
-    
-    Pusya.mew (3);
-    
-    // fill balance
-    sipnet.balance = 100;
-    std::cout << "\nSIP trunk status:" << std::endl;
-    sipnet.printStatus ();
-    
-    // dock the ship
-    std::cout << "\nShip status:" ;
-    Proton.orbitHeight = 40;
-    std::cout << "\n" << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
+    SpaceShip::CrewMember majorTom;
+
+    int check = Proton.makeLoop(5, 34);
+
+    std::cout << check << "\n" << Proton.totalLoops<< std::endl;
     //
     std::cout << "good to go!" << std::endl;
 }
