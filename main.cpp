@@ -150,7 +150,7 @@ struct SpaceShip
     float orbitHeight{ 1000.f };
     std::string engineType{ "rocket" };
     int crewNum{ 3 };
-    int totalLoops = 0;
+    int totalLoops {0};
     std::string country{ "RU" };
     std::string name{ "Salyut" };
     SpaceShip();
@@ -207,9 +207,9 @@ struct PowerUnit
     PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1){}
     void printStatus()
     {
-        std::cout<<"Power Unit Status:"<<std::endl;
-        std::cout<<"inV:"<<inVolt<<std::endl;
-        std::cout<<"outV:"<<outVolt<<std::endl;
+        std::cout << "Power Unit Status:" << std::endl;
+        std::cout << "inV:" << inVolt << std::endl;
+        std::cout << "outV:" << outVolt << std::endl;
     }
      
     bool getElectricity(int outletStandart=1);
@@ -224,12 +224,14 @@ struct VCA
     int attenuation;
     float price;
     int channelNum;
+    double ledBrightness;
     VCA() :
         freqResponse(0.5f),
         insertLoss(0.01),
         attenuation(-100),
         price(3),
-        channelNum(2)
+        channelNum(2),
+        ledBrightness(0)
     {}
     
     void attenuate(int coefficient = -50);
@@ -275,6 +277,25 @@ struct Body
     bool checkTheBolt(int circuitId = 1);
     bool checkShortCircuit(int circuitId = 1);
     void alarmOverDust(float time = 10);
+};
+
+struct Knob
+{
+    int pvalue{0};
+    int cvalue{0};
+
+    struct Led
+    {
+        int Num = 0;
+        float Brightness = 0;
+
+        void set ()
+        {
+            std::cout << Num << " " << Brightness << std::endl;
+        }
+    };
+    
+    int setValue(int, int);
 };
 
 struct MonitorController
@@ -414,8 +435,15 @@ int SpaceShip::makeLoop(int planetNum, int loopCount )
     while (loop <= loopCount)
     {
         ++loop;
+        if ( loop == planetNum )
+        {
+            std::cout << "Planet "<<planetNum<< " Say bye!" << std::endl;
+            this->totalLoops += loop;
+            return loop;
+        }
+            
     }
-    this->totalLoops = loop;
+    this->totalLoops += loop;
     return loop;
 }
 
@@ -533,6 +561,45 @@ void Body::alarmOverDust(float time)
     ++time;
 }
 
+int Knob::setValue(int pval, int cval)
+{
+
+    Knob::Led led;
+    led.Num = pval;
+
+    float step = 1.0f / ( static_cast<float>(cval) + 1.0f );
+    
+    if ( pval < cval )
+    {
+        led.Brightness = 0;
+
+        for ( led.Num = 0; led.Num <= cval; ++led.Num )
+        {
+            led.Brightness+=step;
+            led.set();
+        }
+    }
+    else
+    {
+        while ( led.Num > cval )
+        {
+            led.Brightness = 0;
+            led.set();
+            --led.Num;
+        }
+
+        ( cval !=  0  ? led.Brightness = 1 : 0 );
+        for ( led.Num = cval; led.Num >= 0; --led.Num )
+        {
+            led.set();
+            led.Brightness-=step;
+
+        }
+    }
+
+    return cval;
+}
+
 void MonitorController::setVol(int amount)
 {
     HeadphoneAmp ampLeft, ampRight;
@@ -584,11 +651,21 @@ int main()
 {
     Example::main();
     SpaceShip Proton;
-    SpaceShip::CrewMember majorTom;
-
-    int check = Proton.makeLoop(5, 34);
-
-    std::cout << check << "\n" << Proton.totalLoops<< std::endl;
+    
+    for ( int i = 2; i < 5; ++i ) Proton.makeLoop(i, 6);
+    
+    std::cout << Proton.totalLoops<< std::endl;
+    
+    Knob volume;
+    
+    for ( int i=0;i < 3; ++i )
+    {
+        std::cout << "Set volume: ";
+        std::cin >> volume.cvalue;
+        if ( volume.cvalue == volume.pvalue ) continue;
+        volume.pvalue = volume.setValue(volume.pvalue, volume.cvalue);
+    }
+    
     //
     std::cout << "good to go!" << std::endl;
 }
