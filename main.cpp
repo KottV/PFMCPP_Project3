@@ -64,8 +64,18 @@ int main()
 //call Example::main() in main()
 
 
-
-
+int roundNum(float num) //lucky, the volume knob has only 0-20 scale vals
+{
+    int n = 0;
+ 
+    for (float i = 0.0f; i <= 20.0f; i+=0.5f)
+    {
+        if (i >= num ) return n / 2;
+        ++n;
+    }
+    
+    return 0;
+}
 
 struct CanPlant
 {
@@ -181,13 +191,13 @@ struct DAC
 {
     int sampleRate;
     int bitDepth;
-    int SNR; FIXME: I know this means "Signal Noise Ratio" but help the reader and write it out: signalNoiseRatio
+    int signalNoiseRatio;
     float amountOfPowerConsumed;
     double dynamicRange;
     DAC() :
         sampleRate(48000),
         bitDepth(24),
-        SNR(112),
+        signalNoiseRatio(112),
         amountOfPowerConsumed(0.9f),
         dynamicRange(9.9)
     {}
@@ -241,13 +251,13 @@ struct VCA
 
 struct HeadphoneAmp
 {
-    int SNR; FIXME: rename
+    int signalNoiseRatio;
     float outPower;
     int outImpendance;
     int maxFreq;
     double inVolt;
     HeadphoneAmp() :
-        SNR(112),
+        signalNoiseRatio(112),
         outPower(600.0f),
         outImpendance(32),
         maxFreq(20000),
@@ -281,13 +291,13 @@ struct Body
 
 struct Knob
 {
-    int pvalue{0};
-    int cvalue{0};
+    float pvalue{0.0f};
+    float cvalue{0.0f};
 
     struct Led
     {
         int num = 0;
-        float brightness = 0;
+        float brightness = 0.0f;
 
         void set ()
         {
@@ -295,17 +305,17 @@ struct Knob
         }
     };
     
-    int setValue(int, int);
+    float setValue(float, float);
 };
 
 struct MonitorController
 {
     DAC dacLeft;
     DAC dacRight;
-    PowerUnit PSU0; FIXME
-    VCA VCA0; FIXME
-    HeadphoneAmp AmpLeft; FIXME
-    HeadphoneAmp AmpRight; FIXME
+    PowerUnit psu0;
+    VCA vca0;
+    HeadphoneAmp ampLeft;
+    HeadphoneAmp ampRight;
     Body body0;
     MonitorController(){}
 
@@ -385,8 +395,8 @@ void Cat::sleep (float time)
 void Cat::mew (int count)
 { 
 //    --count;
-    for (int i=1;i<=count;++i) FIXME 
-    std::cout << "mew" << i << std::endl; FIXME
+    for (int i=1; i <= count; ++i)
+        std::cout << "mew" << i << std::endl;
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
@@ -483,7 +493,7 @@ void DAC::audioOut(int channelNum)
 
 bool PowerUnit::getElectricity(int outletStandart)
 {
-    return (outletStandart<3);FIXME
+    return (outletStandart < 3);
 }
 
 double PowerUnit::convertVoltage(double in, double out)
@@ -504,10 +514,10 @@ void VCA::attenuate(int coefficient)
 
 void VCA::inputPower(int amountOfPower)
 {
-    PowerUnit PSU0; FIXME
+    PowerUnit psu0;
     if (amountOfPower < 20)
     {
-        PSU0.getElectricity(2);
+        psu0.getElectricity(2);
     }
 }
 
@@ -529,11 +539,11 @@ void HeadphoneAmp::getInput(int channelNum)
 
 void HeadphoneAmp::doAmp(int channelNum)
 {
-    VCA VCA0; FIXME
+    VCA vca0;
     //int output;
     for (int i = 0; i < channelNum; i++)
     {
-        VCA0.attenuate(1);
+        vca0.attenuate(1);
     }
 
 }
@@ -560,19 +570,22 @@ void Body::alarmOverDust(float time)
     ++time;
 }
 
-int Knob::setValue(int pval, int cval)
+float Knob::setValue(float pval, float cval)
 {
 
+    int pvalInt = roundNum(pval);
+    int cvalInt = roundNum(cval);
+    
     Knob::Led led;
-    led.num = pval;
+    led.num = pvalInt;
 
-    float step = 1.0f / (static_cast<float>(cval) + 1.0f); FIXME: no casting allowed until it is covered in Project 4
+    float step = 1.0f / (cval + 1.0f);
     
     if (pval < cval)
     {
         led.brightness = 0;
 
-        for (led.num = 0; led.num <= cval; ++led.num)
+        for (led.num = 0; led.num <= cvalInt; ++led.num)
         {
             led.brightness += step;
             led.set();
@@ -580,15 +593,15 @@ int Knob::setValue(int pval, int cval)
     }
     else
     {
-        while (led.num > cval)
+        while (led.num > cvalInt)
         {
             led.brightness = 0;
             led.set();
             --led.num;
         }
 
-        led.brightness = (cval != 0 ? 1 : 0);
-        for (led.num = cval; led.num >= 0; --led.num)
+        led.brightness = (cvalInt != 0 ? 1 : 0);
+        for (led.num = cvalInt; led.num >= 0; --led.num)
         {
             led.set();
             led.brightness -= step;
@@ -600,10 +613,10 @@ int Knob::setValue(int pval, int cval)
 
 void MonitorController::setVol(int amount)
 {
-    HeadphoneAmp ampLeft, ampRight;
+    HeadphoneAmp ampLeft1, ampRight1;
     
-    ampLeft.doAmp(amount);
-    ampRight.doAmp(amount);
+    ampLeft1.doAmp(amount);
+    ampRight1.doAmp(amount);
 }
 
 bool MonitorController::selectSource(int sourceNum, bool status)
@@ -649,6 +662,39 @@ int main()
 {
     Example::main();
     SpaceShip proton;
+    Cat pusya;
+    SipProvider sipnet;
+    PowerUnit powerunit;
+    DAC dacLeft;
+    
+    std::cout << "\nSIP trunk status:" << std::endl;
+    sipnet.printStatus ();
+    
+    std::cout << "\n";
+    powerunit.printStatus();
+    
+    std::cout << "\nDAC status: " << dacLeft.checkError(440) << std::endl;
+    
+    
+    std::cout << "\nShip status: \n" ;
+    std::cout << ( proton.dock()  ? "free fly" : "docked" ) << std::endl;
+    
+    std::cout << "\nCat attributes:" << "\n" 
+    << "colour: " << pusya.colour << "\n"
+    << "age: " << pusya.age << "\n"
+    << "gender: "<< ( pusya.gender == 0 ? "Girl" : "Boy" ) << std::endl;
+    
+    pusya.mew (3);
+    
+    // fill balance
+    sipnet.balance = 100;
+    std::cout << "\nSIP trunk status:" << std::endl;
+    sipnet.printStatus ();
+    
+    // dock the ship
+    std::cout << "\nShip status:" ;
+    proton.orbitHeight = 40;
+    std::cout << "\n" << ( proton.dock()  ? "free fly" : "docked" ) << std::endl;
     
     for (int i = 2; i < 5; ++i) 
         proton.totalLoops += proton.makeLoop(i, 6);
@@ -662,6 +708,4 @@ int main()
     volume.pvalue = volume.setValue(volume.pvalue, 0);
     //
     std::cout << "good to go!" << std::endl;
-
-    FIXME: your main() function should be a LOT longer. stop deleting stuff from it.
 }
