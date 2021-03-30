@@ -36,14 +36,14 @@ struct Bar
 };
 struct Foo
 {
-    Bar scopeLifetimeFunc( int threshold, int startingVal ) //3), 4c) 
+    Bar scopeLifetimeFunc(int threshold, int startingVal) //3), 4c) 
     {
         Bar bar(startingVal);                //4a)
-        while( bar.num < threshold )         //4a) 
+        while(bar.num < threshold)         //4a) 
         { 
             bar.num += 1;                    //4a)
             
-            if( bar.num >= threshold )       //4b)
+            if(bar.num >= threshold)       //4b)
                 return bar;
         }
         
@@ -64,8 +64,20 @@ int main()
 //call Example::main() in main()
 
 
-
-
+int roundNum(float num) //lucky, the volume knob has only 0-20 scale vals
+{
+    int n = 0;
+ 
+    for (float i = 0.0f; i <= 20.0f; i+=0.5f)
+    {
+        if (i >= num )
+            return n / 2;
+        
+        ++n;
+    }
+    
+    return 0;
+}
 
 struct CanPlant
 {
@@ -107,7 +119,7 @@ struct SipProvider
     int calls;
     bool t38;
     double price;
-    double balance { -1 };
+    double balance{ -1 };
     int slaType;
     SipProvider() :
         calls(2),
@@ -116,7 +128,7 @@ struct SipProvider
         slaType(1)
     {}
     
-    void printStatus () { std::cout << "trunk: " << ( balance < 0 ? "offline" : "online" ) << std::endl; }
+    void printStatus() { std::cout << "trunk: " << (balance < 0 ? "offline" : "online") << std::endl; }
     bool makeCall(int src, int dst);
     double chargeCustomer(double time, int customerId);
     double traficCount(double time);
@@ -150,6 +162,7 @@ struct SpaceShip
     float orbitHeight{ 1000.f };
     std::string engineType{ "rocket" };
     int crewNum{ 3 };
+    int totalLoops {0};
     std::string country{ "RU" };
     std::string name{ "Salyut" };
     SpaceShip();
@@ -169,7 +182,7 @@ struct SpaceShip
     };
 
     bool dock();
-    void makeLoop(int planetNum = 3);
+    int makeLoop(int planetNum = 3, int loopCount = 1);
     bool takeOf(float startTime);
 };
 
@@ -180,13 +193,13 @@ struct DAC
 {
     int sampleRate;
     int bitDepth;
-    int SNR;
+    int signalNoiseRatio;
     float amountOfPowerConsumed;
     double dynamicRange;
     DAC() :
         sampleRate(48000),
         bitDepth(24),
-        SNR(112),
+        signalNoiseRatio(112),
         amountOfPowerConsumed(0.9f),
         dynamicRange(9.9)
     {}
@@ -200,15 +213,15 @@ struct PowerUnit
 {
     float weight;
     double inVolt;
-    double outVolt { 12.0 };
+    double outVolt{ 12.0 };
     int outCurrent;
-    int maxOutTemp { 80 };
+    int maxOutTemp{ 80 };
     PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1){}
     void printStatus()
     {
-        std::cout<<"Power Unit Status:"<<std::endl;
-        std::cout<<"inV:"<<inVolt<<std::endl;
-        std::cout<<"outV:"<<outVolt<<std::endl;
+        std::cout << "Power Unit Status:" << std::endl;
+        std::cout << "inV:" << inVolt << std::endl;
+        std::cout << "outV:" << outVolt << std::endl;
     }
      
     bool getElectricity(int outletStandart=1);
@@ -223,28 +236,30 @@ struct VCA
     int attenuation;
     float price;
     int channelNum;
+    double ledBrightness;
     VCA() :
         freqResponse(0.5f),
         insertLoss(0.01),
         attenuation(-100),
         price(3),
-        channelNum(2)
+        channelNum(2),
+        ledBrightness(0)
     {}
     
     void attenuate(int coefficient = -50);
     void inputPower(int amountOfPower = 20);
-    int readKnob (int knobAngle = 10);
+    int readKnob(int knobAngle = 10);
 };
 
 struct HeadphoneAmp
 {
-    int SNR;
+    int signalNoiseRatio;
     float outPower;
     int outImpendance;
     int maxFreq;
     double inVolt;
     HeadphoneAmp() :
-        SNR(112),
+        signalNoiseRatio(112),
         outPower(600.0f),
         outImpendance(32),
         maxFreq(20000),
@@ -276,14 +291,33 @@ struct Body
     void alarmOverDust(float time = 10);
 };
 
+struct Knob
+{
+    float pvalue{0.0f};
+    float cvalue{0.0f};
+
+    struct Led
+    {
+        int num = 0;
+        float brightness = 0.0f;
+
+        void set ()
+        {
+            std::cout << num << " " << brightness << std::endl;
+        }
+    };
+    
+    float setValue(float, float);
+};
+
 struct MonitorController
 {
-    DAC DACLeft;
-    DAC DACRight;
-    PowerUnit PSU0;
-    VCA VCA0;
-    HeadphoneAmp AmpLeft;
-    HeadphoneAmp AmpRight;
+    DAC dacLeft;
+    DAC dacRight;
+    PowerUnit psu0;
+    VCA vca0;
+    HeadphoneAmp ampLeft;
+    HeadphoneAmp ampRight;
     Body body0;
     MonitorController(){}
 
@@ -363,8 +397,8 @@ void Cat::sleep (float time)
 void Cat::mew (int count)
 { 
 //    --count;
-    for (int i=1;i<=count;++i)
-    std::cout << "mew" << i << std::endl;
+    for (int i=1; i <= count; ++i)
+        std::cout << "mew" << i << std::endl;
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
@@ -407,9 +441,21 @@ bool SpaceShip::dock()
     }
     return false;
 }
-void SpaceShip::makeLoop(int planetNum )
+int SpaceShip::makeLoop(int planetNum, int loopCount)
 {
-    ++planetNum;
+    int loop = 0;
+    while (loop <= loopCount)
+    {
+        ++loop;
+        if (loop == planetNum)
+        {
+            std::cout << "Planet " << planetNum << " Say bye!" << std::endl;
+            return loop;
+        }
+            
+    }
+    //this->totalLoops += loop;
+    return loop;
 }
 
 bool SpaceShip::takeOf(float startTime)
@@ -421,7 +467,7 @@ bool SpaceShip::takeOf(float startTime)
 
 void DAC::readInput(int channelNum)
 {
-    for ( int i = 0; i < channelNum; i++ )
+    for (int i = 0; i < channelNum; i++)
     {
         checkError(i);
     }
@@ -439,7 +485,7 @@ void DAC::audioOut(int channelNum)
     
     //int bits = 24;
     
-    for ( int i = 0; i < channelNum; i++ )
+    for (int i = 0; i < channelNum; i++)
     {
         ampLeft.doAmp(i);
         ampRight.doAmp(i);
@@ -449,7 +495,7 @@ void DAC::audioOut(int channelNum)
 
 bool PowerUnit::getElectricity(int outletStandart)
 {
-    return (outletStandart<3);
+    return (outletStandart < 3);
 }
 
 double PowerUnit::convertVoltage(double in, double out)
@@ -470,10 +516,10 @@ void VCA::attenuate(int coefficient)
 
 void VCA::inputPower(int amountOfPower)
 {
-    PowerUnit PSU0;
+    PowerUnit psu0;
     if (amountOfPower < 20)
     {
-        PSU0.getElectricity(2);
+        psu0.getElectricity(2);
     }
 }
 
@@ -484,22 +530,22 @@ int VCA::readKnob (int knobAngle)
 
 void HeadphoneAmp::getInput(int channelNum)
 {
-    DAC DACLeft, DACRight;
-    for ( int i = 0; i < channelNum; i++ )
+    DAC dacLeft, dacRight;
+    for (int i = 0; i < channelNum; i++)
     {
-        DACLeft.readInput(i);
-        DACRight.readInput(i);
+        dacLeft.readInput(i);
+        dacRight.readInput(i);
     }
 
 }
 
 void HeadphoneAmp::doAmp(int channelNum)
 {
-    VCA VCA0;
+    VCA vca0;
     //int output;
-    for ( int i = 0; i < channelNum; i++ )
+    for (int i = 0; i < channelNum; i++)
     {
-        VCA0.attenuate(1);
+        vca0.attenuate(1);
     }
 
 }
@@ -526,12 +572,53 @@ void Body::alarmOverDust(float time)
     ++time;
 }
 
+float Knob::setValue(float pval, float cval)
+{
+
+    int pvalInt = roundNum(pval);
+    int cvalInt = roundNum(cval);
+    
+    Knob::Led led;
+    led.num = pvalInt;
+
+    float step = 1.0f / (cval + 1.0f);
+    
+    if (pval < cval)
+    {
+        led.brightness = 0;
+
+        for (led.num = 0; led.num <= cvalInt; ++led.num)
+        {
+            led.brightness += step;
+            led.set();
+        }
+    }
+    else
+    {
+        while (led.num > cvalInt)
+        {
+            led.brightness = 0;
+            led.set();
+            --led.num;
+        }
+
+        led.brightness = (cvalInt != 0 ? 1 : 0);
+        for (led.num = cvalInt; led.num >= 0; --led.num)
+        {
+            led.set();
+            led.brightness -= step;
+        }
+    }
+
+    return cval;
+}
+
 void MonitorController::setVol(int amount)
 {
-    HeadphoneAmp ampLeft, ampRight;
+    HeadphoneAmp ampLeft1, ampRight1;
     
-    ampLeft.doAmp(amount);
-    ampRight.doAmp(amount);
+    ampLeft1.doAmp(amount);
+    ampRight1.doAmp(amount);
 }
 
 bool MonitorController::selectSource(int sourceNum, bool status)
@@ -576,9 +663,9 @@ bool MonitorController::toggleCrossfeed(bool status)
 int main()
 {
     Example::main();
-    Cat Pusya;
+    SpaceShip proton;
+    Cat pusya;
     SipProvider sipnet;
-    SpaceShip Proton;
     PowerUnit powerunit;
     DAC dacLeft;
     
@@ -592,14 +679,14 @@ int main()
     
     
     std::cout << "\nShip status: \n" ;
-    std::cout << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
+    std::cout << ( proton.dock()  ? "free fly" : "docked" ) << std::endl;
     
     std::cout << "\nCat attributes:" << "\n" 
-    << "colour: " << Pusya.colour << "\n"
-    << "age: " << Pusya.age << "\n"
-    << "gender: "<< ( Pusya.gender == 0 ? "Girl" : "Boy" ) << std::endl;
+    << "colour: " << pusya.colour << "\n"
+    << "age: " << pusya.age << "\n"
+    << "gender: "<< ( pusya.gender == 0 ? "Girl" : "Boy" ) << std::endl;
     
-    Pusya.mew (3);
+    pusya.mew (3);
     
     // fill balance
     sipnet.balance = 100;
@@ -608,8 +695,19 @@ int main()
     
     // dock the ship
     std::cout << "\nShip status:" ;
-    Proton.orbitHeight = 40;
-    std::cout << "\n" << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
+    proton.orbitHeight = 40;
+    std::cout << "\n" << ( proton.dock()  ? "free fly" : "docked" ) << std::endl;
+    
+    for (int i = 2; i < 5; ++i) 
+        proton.totalLoops += proton.makeLoop(i, 6);
+    
+    std::cout << proton.totalLoops<< std::endl;
+    
+    Knob volume;
+    
+    volume.pvalue = volume.setValue(volume.pvalue, 10);
+    volume.pvalue = volume.setValue(volume.pvalue, 4);
+    volume.pvalue = volume.setValue(volume.pvalue, 0);
     //
     std::cout << "good to go!" << std::endl;
 }
