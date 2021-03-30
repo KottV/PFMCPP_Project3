@@ -150,6 +150,7 @@ struct SpaceShip
     float orbitHeight{ 1000.f };
     std::string engineType{ "rocket" };
     int crewNum{ 3 };
+    int totalLoops {0};
     std::string country{ "RU" };
     std::string name{ "Salyut" };
     SpaceShip();
@@ -169,7 +170,7 @@ struct SpaceShip
     };
 
     bool dock();
-    void makeLoop(int planetNum = 3);
+    int makeLoop(int planetNum = 3, int loopCount = 1);
     bool takeOf(float startTime);
 };
 
@@ -206,9 +207,9 @@ struct PowerUnit
     PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1){}
     void printStatus()
     {
-        std::cout<<"Power Unit Status:"<<std::endl;
-        std::cout<<"inV:"<<inVolt<<std::endl;
-        std::cout<<"outV:"<<outVolt<<std::endl;
+        std::cout << "Power Unit Status:" << std::endl;
+        std::cout << "inV:" << inVolt << std::endl;
+        std::cout << "outV:" << outVolt << std::endl;
     }
      
     bool getElectricity(int outletStandart=1);
@@ -223,12 +224,14 @@ struct VCA
     int attenuation;
     float price;
     int channelNum;
+    double ledBrightness;
     VCA() :
         freqResponse(0.5f),
         insertLoss(0.01),
         attenuation(-100),
         price(3),
-        channelNum(2)
+        channelNum(2),
+        ledBrightness(0)
     {}
     
     void attenuate(int coefficient = -50);
@@ -274,6 +277,25 @@ struct Body
     bool checkTheBolt(int circuitId = 1);
     bool checkShortCircuit(int circuitId = 1);
     void alarmOverDust(float time = 10);
+};
+
+struct Knob
+{
+    int pvalue{0};
+    int cvalue{0};
+
+    struct Led
+    {
+        int Num = 0;
+        float Brightness = 0;
+
+        void set ()
+        {
+            std::cout << Num << " " << Brightness << std::endl;
+        }
+    };
+    
+    int setValue(int, int);
 };
 
 struct MonitorController
@@ -407,9 +429,22 @@ bool SpaceShip::dock()
     }
     return false;
 }
-void SpaceShip::makeLoop(int planetNum )
+int SpaceShip::makeLoop(int planetNum, int loopCount )
 {
-    ++planetNum;
+    int loop = 0;
+    while (loop <= loopCount)
+    {
+        ++loop;
+        if ( loop == planetNum )
+        {
+            std::cout << "Planet "<<planetNum<< " Say bye!" << std::endl;
+            this->totalLoops += loop;
+            return loop;
+        }
+            
+    }
+    this->totalLoops += loop;
+    return loop;
 }
 
 bool SpaceShip::takeOf(float startTime)
@@ -526,6 +561,45 @@ void Body::alarmOverDust(float time)
     ++time;
 }
 
+int Knob::setValue(int pval, int cval)
+{
+
+    Knob::Led led;
+    led.Num = pval;
+
+    float step = 1.0f / ( static_cast<float>(cval) + 1.0f );
+    
+    if ( pval < cval )
+    {
+        led.Brightness = 0;
+
+        for ( led.Num = 0; led.Num <= cval; ++led.Num )
+        {
+            led.Brightness+=step;
+            led.set();
+        }
+    }
+    else
+    {
+        while ( led.Num > cval )
+        {
+            led.Brightness = 0;
+            led.set();
+            --led.Num;
+        }
+
+        ( cval !=  0  ? led.Brightness = 1 : 0 );
+        for ( led.Num = cval; led.Num >= 0; --led.Num )
+        {
+            led.set();
+            led.Brightness-=step;
+
+        }
+    }
+
+    return cval;
+}
+
 void MonitorController::setVol(int amount)
 {
     HeadphoneAmp ampLeft, ampRight;
@@ -576,40 +650,22 @@ bool MonitorController::toggleCrossfeed(bool status)
 int main()
 {
     Example::main();
-    Cat Pusya;
-    SipProvider sipnet;
     SpaceShip Proton;
-    PowerUnit powerunit;
-    DAC dacLeft;
     
-    std::cout << "\nSIP trunk status:" << std::endl;
-    sipnet.printStatus ();
+    for ( int i = 2; i < 5; ++i ) Proton.makeLoop(i, 6);
     
-    std::cout << "\n";
-    powerunit.printStatus();
+    std::cout << Proton.totalLoops<< std::endl;
     
-    std::cout << "\nDAC status: " << dacLeft.checkError(440) << std::endl;
+    Knob volume;
     
+    for ( int i=0;i < 3; ++i )
+    {
+        std::cout << "Set volume: ";
+        std::cin >> volume.cvalue;
+        if ( volume.cvalue == volume.pvalue ) continue;
+        volume.pvalue = volume.setValue(volume.pvalue, volume.cvalue);
+    }
     
-    std::cout << "\nShip status: \n" ;
-    std::cout << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
-    
-    std::cout << "\nCat attributes:" << "\n" 
-    << "colour: " << Pusya.colour << "\n"
-    << "age: " << Pusya.age << "\n"
-    << "gender: "<< ( Pusya.gender == 0 ? "Girl" : "Boy" ) << std::endl;
-    
-    Pusya.mew (3);
-    
-    // fill balance
-    sipnet.balance = 100;
-    std::cout << "\nSIP trunk status:" << std::endl;
-    sipnet.printStatus ();
-    
-    // dock the ship
-    std::cout << "\nShip status:" ;
-    Proton.orbitHeight = 40;
-    std::cout << "\n" << ( Proton.dock()  ? "free fly" : "docked" ) << std::endl;
     //
     std::cout << "good to go!" << std::endl;
 }
