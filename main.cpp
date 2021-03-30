@@ -36,14 +36,14 @@ struct Bar
 };
 struct Foo
 {
-    Bar scopeLifetimeFunc( int threshold, int startingVal ) //3), 4c) 
+    Bar scopeLifetimeFunc(int threshold, int startingVal) //3), 4c) 
     {
         Bar bar(startingVal);                //4a)
-        while( bar.num < threshold )         //4a) 
+        while(bar.num < threshold)         //4a) 
         { 
             bar.num += 1;                    //4a)
             
-            if( bar.num >= threshold )       //4b)
+            if(bar.num >= threshold)       //4b)
                 return bar;
         }
         
@@ -107,7 +107,7 @@ struct SipProvider
     int calls;
     bool t38;
     double price;
-    double balance { -1 };
+    double balance{ -1 };
     int slaType;
     SipProvider() :
         calls(2),
@@ -116,7 +116,7 @@ struct SipProvider
         slaType(1)
     {}
     
-    void printStatus () { std::cout << "trunk: " << ( balance < 0 ? "offline" : "online" ) << std::endl; }
+    void printStatus() { std::cout << "trunk: " << (balance < 0 ? "offline" : "online") << std::endl; }
     bool makeCall(int src, int dst);
     double chargeCustomer(double time, int customerId);
     double traficCount(double time);
@@ -201,9 +201,9 @@ struct PowerUnit
 {
     float weight;
     double inVolt;
-    double outVolt { 12.0 };
+    double outVolt{ 12.0 };
     int outCurrent;
-    int maxOutTemp { 80 };
+    int maxOutTemp{ 80 };
     PowerUnit() : weight(1.2f), inVolt(220), outCurrent(1){}
     void printStatus()
     {
@@ -236,7 +236,7 @@ struct VCA
     
     void attenuate(int coefficient = -50);
     void inputPower(int amountOfPower = 20);
-    int readKnob (int knobAngle = 10);
+    int readKnob(int knobAngle = 10);
 };
 
 struct HeadphoneAmp
@@ -286,12 +286,12 @@ struct Knob
 
     struct Led
     {
-        int Num = 0;
-        float Brightness = 0;
+        int num = 0;
+        float brightness = 0;
 
         void set ()
         {
-            std::cout << Num << " " << Brightness << std::endl;
+            std::cout << num << " " << brightness << std::endl;
         }
     };
     
@@ -300,8 +300,8 @@ struct Knob
 
 struct MonitorController
 {
-    DAC DACLeft;
-    DAC DACRight;
+    DAC dacLeft;
+    DAC dacRight;
     PowerUnit PSU0;
     VCA VCA0;
     HeadphoneAmp AmpLeft;
@@ -429,21 +429,20 @@ bool SpaceShip::dock()
     }
     return false;
 }
-int SpaceShip::makeLoop(int planetNum, int loopCount )
+int SpaceShip::makeLoop(int planetNum, int loopCount)
 {
     int loop = 0;
     while (loop <= loopCount)
     {
         ++loop;
-        if ( loop == planetNum )
+        if (loop == planetNum)
         {
-            std::cout << "Planet "<<planetNum<< " Say bye!" << std::endl;
-            this->totalLoops += loop;
+            std::cout << "Planet " << planetNum << " Say bye!" << std::endl;
             return loop;
         }
             
     }
-    this->totalLoops += loop;
+    //this->totalLoops += loop;
     return loop;
 }
 
@@ -456,7 +455,7 @@ bool SpaceShip::takeOf(float startTime)
 
 void DAC::readInput(int channelNum)
 {
-    for ( int i = 0; i < channelNum; i++ )
+    for (int i = 0; i < channelNum; i++)
     {
         checkError(i);
     }
@@ -474,7 +473,7 @@ void DAC::audioOut(int channelNum)
     
     //int bits = 24;
     
-    for ( int i = 0; i < channelNum; i++ )
+    for (int i = 0; i < channelNum; i++)
     {
         ampLeft.doAmp(i);
         ampRight.doAmp(i);
@@ -519,11 +518,11 @@ int VCA::readKnob (int knobAngle)
 
 void HeadphoneAmp::getInput(int channelNum)
 {
-    DAC DACLeft, DACRight;
-    for ( int i = 0; i < channelNum; i++ )
+    DAC dacLeft, dacRight;
+    for (int i = 0; i < channelNum; i++)
     {
-        DACLeft.readInput(i);
-        DACRight.readInput(i);
+        dacLeft.readInput(i);
+        dacRight.readInput(i);
     }
 
 }
@@ -532,7 +531,7 @@ void HeadphoneAmp::doAmp(int channelNum)
 {
     VCA VCA0;
     //int output;
-    for ( int i = 0; i < channelNum; i++ )
+    for (int i = 0; i < channelNum; i++)
     {
         VCA0.attenuate(1);
     }
@@ -565,35 +564,34 @@ int Knob::setValue(int pval, int cval)
 {
 
     Knob::Led led;
-    led.Num = pval;
+    led.num = pval;
 
-    float step = 1.0f / ( static_cast<float>(cval) + 1.0f );
+    float step = 1.0f / (static_cast<float>(cval) + 1.0f);
     
-    if ( pval < cval )
+    if (pval < cval)
     {
-        led.Brightness = 0;
+        led.brightness = 0;
 
-        for ( led.Num = 0; led.Num <= cval; ++led.Num )
+        for (led.num = 0; led.num <= cval; ++led.num)
         {
-            led.Brightness+=step;
+            led.brightness += step;
             led.set();
         }
     }
     else
     {
-        while ( led.Num > cval )
+        while (led.num > cval)
         {
-            led.Brightness = 0;
+            led.brightness = 0;
             led.set();
-            --led.Num;
+            --led.num;
         }
 
-        ( cval !=  0  ? led.Brightness = 1 : 0 );
-        for ( led.Num = cval; led.Num >= 0; --led.Num )
+        led.brightness = (cval != 0 ? 1 : 0);
+        for (led.num = cval; led.num >= 0; --led.num)
         {
             led.set();
-            led.Brightness-=step;
-
+            led.brightness -= step;
         }
     }
 
@@ -650,22 +648,18 @@ bool MonitorController::toggleCrossfeed(bool status)
 int main()
 {
     Example::main();
-    SpaceShip Proton;
+    SpaceShip proton;
     
-    for ( int i = 2; i < 5; ++i ) Proton.makeLoop(i, 6);
+    for (int i = 2; i < 5; ++i) 
+        proton.totalLoops += proton.makeLoop(i, 6);
     
-    std::cout << Proton.totalLoops<< std::endl;
+    std::cout << proton.totalLoops<< std::endl;
     
     Knob volume;
     
-    for ( int i=0;i < 3; ++i )
-    {
-        std::cout << "Set volume: ";
-        std::cin >> volume.cvalue;
-        if ( volume.cvalue == volume.pvalue ) continue;
-        volume.pvalue = volume.setValue(volume.pvalue, volume.cvalue);
-    }
-    
+    volume.pvalue = volume.setValue(volume.pvalue, 10);
+    volume.pvalue = volume.setValue(volume.pvalue, 4);
+    volume.pvalue = volume.setValue(volume.pvalue, 0);
     //
     std::cout << "good to go!" << std::endl;
 }
