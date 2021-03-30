@@ -70,7 +70,9 @@ int roundNum(float num) //lucky, the volume knob has only 0-20 scale vals
  
     for (float i = 0.0f; i <= 20.0f; i+=0.5f)
     {
-        if (i >= num ) return n / 2;
+        if (i >= num )
+            return n / 2;
+        
         ++n;
     }
     
