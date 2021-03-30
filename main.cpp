@@ -181,7 +181,7 @@ struct DAC
 {
     int sampleRate;
     int bitDepth;
-    int SNR;
+    int SNR; FIXME: I know this means "Signal Noise Ratio" but help the reader and write it out: signalNoiseRatio
     float amountOfPowerConsumed;
     double dynamicRange;
     DAC() :
@@ -241,7 +241,7 @@ struct VCA
 
 struct HeadphoneAmp
 {
-    int SNR;
+    int SNR; FIXME: rename
     float outPower;
     int outImpendance;
     int maxFreq;
@@ -302,10 +302,10 @@ struct MonitorController
 {
     DAC dacLeft;
     DAC dacRight;
-    PowerUnit PSU0;
-    VCA VCA0;
-    HeadphoneAmp AmpLeft;
-    HeadphoneAmp AmpRight;
+    PowerUnit PSU0; FIXME
+    VCA VCA0; FIXME
+    HeadphoneAmp AmpLeft; FIXME
+    HeadphoneAmp AmpRight; FIXME
     Body body0;
     MonitorController(){}
 
@@ -385,8 +385,8 @@ void Cat::sleep (float time)
 void Cat::mew (int count)
 { 
 //    --count;
-    for (int i=1;i<=count;++i)
-    std::cout << "mew" << i << std::endl;
+    for (int i=1;i<=count;++i) FIXME 
+    std::cout << "mew" << i << std::endl; FIXME
 }
 
 void SpaceShip::CrewMember::examineAnimal(int date, float time, Cat cat)
@@ -483,7 +483,7 @@ void DAC::audioOut(int channelNum)
 
 bool PowerUnit::getElectricity(int outletStandart)
 {
-    return (outletStandart<3);
+    return (outletStandart<3);FIXME
 }
 
 double PowerUnit::convertVoltage(double in, double out)
@@ -504,7 +504,7 @@ void VCA::attenuate(int coefficient)
 
 void VCA::inputPower(int amountOfPower)
 {
-    PowerUnit PSU0;
+    PowerUnit PSU0; FIXME
     if (amountOfPower < 20)
     {
         PSU0.getElectricity(2);
@@ -529,7 +529,7 @@ void HeadphoneAmp::getInput(int channelNum)
 
 void HeadphoneAmp::doAmp(int channelNum)
 {
-    VCA VCA0;
+    VCA VCA0; FIXME
     //int output;
     for (int i = 0; i < channelNum; i++)
     {
@@ -566,7 +566,7 @@ int Knob::setValue(int pval, int cval)
     Knob::Led led;
     led.num = pval;
 
-    float step = 1.0f / (static_cast<float>(cval) + 1.0f);
+    float step = 1.0f / (static_cast<float>(cval) + 1.0f); FIXME: no casting allowed until it is covered in Project 4
     
     if (pval < cval)
     {
@@ -662,4 +662,6 @@ int main()
     volume.pvalue = volume.setValue(volume.pvalue, 0);
     //
     std::cout << "good to go!" << std::endl;
+
+    FIXME: your main() function should be a LOT longer. stop deleting stuff from it.
 }
